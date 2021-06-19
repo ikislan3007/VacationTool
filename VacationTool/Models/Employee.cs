@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,8 +17,13 @@ namespace VacationTool.Models
         public string FirstName { get; set; }
         public string  SecondName { get; set; }
         public string  Email { get; set; }
-        public string  Position { get; set; }
+        
         public Gender Gender { get; set; }
+
+        [ForeignKey("Position")]
+        public int? PositionId { get; set; }
+
+        public Position Position { get; set; }
 
         public virtual ICollection<Vacation>? Vacations { get; set; }
     }

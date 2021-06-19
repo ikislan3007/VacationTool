@@ -10,15 +10,12 @@ namespace VacationTool.Models
     {
         Junior,
         Mid,
-        Senior,
-        TeamLead,
-        TechLead,
-        ProjectManager
+        Senior
     }
 
     public enum Role
     {
-        ProjectManager,
+        Manager,
         Developer,
         Recruiter
 
@@ -34,7 +31,9 @@ namespace VacationTool.Models
 
         public int Salary { get; set; }
 
-        public virtual ICollection<Employee> Employees { get; set; }
+        // public int YearsOfExperience { get; set; }
+
+        public ICollection<Employee> Employees { get; set; }
 
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,15 +16,17 @@ namespace VacationTool.Controllers
     [ApiController]
     public class VacationsController : ControllerBase
     {
-        private readonly CompanyContext _context;
+        private readonly CompanyContext2 _context;
 
-        public VacationsController(CompanyContext context)
+        public VacationsController(CompanyContext2 context)
         {
             _context = context;
         }
 
         // GET: api/Vacations
         [HttpGet]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Vacation>>> GetVacations()
         {
             return await _context.Vacations.ToListAsync();
@@ -30,6 +34,8 @@ namespace VacationTool.Controllers
 
         // GET: api/Vacations/5
         [HttpGet("{id}")]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<ActionResult<Vacation>> GetVacation(int id)
         {
             var vacation = await _context.Vacations.FindAsync(id);
@@ -45,6 +51,8 @@ namespace VacationTool.Controllers
         // PUT: api/Vacations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<IActionResult> PutVacation(int id, Vacation vacation)
         {
             if (id != vacation.ID)
@@ -76,6 +84,8 @@ namespace VacationTool.Controllers
         // POST: api/Vacations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<ActionResult<Vacation>> PostVacation(Vacation vacation)
         {
             _context.Vacations.Add(vacation);

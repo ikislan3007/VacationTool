@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,14 +16,16 @@ namespace VacationTool.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly CompanyContext _context;
+        private readonly CompanyContext2 _context;
 
-        public EmployeesController(CompanyContext context)
+        public EmployeesController(CompanyContext2 context)
         {
             _context = context;
         }
 
         // GET: api/Employees
+        [EnableCors("AllowAll")]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
@@ -30,6 +34,8 @@ namespace VacationTool.Controllers
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
@@ -45,6 +51,8 @@ namespace VacationTool.Controllers
         // PUT: api/Employees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<IActionResult> PutEmployee(int id, Employee employee)
         {
             if (id != employee.ID)
@@ -76,6 +84,8 @@ namespace VacationTool.Controllers
         // POST: api/Employees
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
             _context.Employees.Add(employee);
@@ -86,6 +96,8 @@ namespace VacationTool.Controllers
 
         // DELETE: api/Employees/5
         [HttpDelete("{id}")]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
             var employee = await _context.Employees.FindAsync(id);

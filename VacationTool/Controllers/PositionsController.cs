@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +16,29 @@ namespace VacationTool.Controllers
     [ApiController]
     public class PositionsController : ControllerBase
     {
-        private readonly CompanyContext _context;
+        private readonly CompanyContext2 _context;
 
-        public PositionsController(CompanyContext context)
+        public PositionsController(CompanyContext2 context)
         {
             _context = context;
         }
 
         // GET: api/Positions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Position>>> GetPosition()
+        [EnableCors("AllowAll")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<Position>>> GetPositions()
         {
-            return await _context.Position.ToListAsync();
+            return await _context.Positions.ToListAsync();
         }
 
         // GET: api/Positions/5
         [HttpGet("{id}")]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<ActionResult<Position>> GetPosition(int id)
         {
-            var position = await _context.Position.FindAsync(id);
+            var position = await _context.Positions.FindAsync(id);
 
             if (position == null)
             {
@@ -45,6 +51,8 @@ namespace VacationTool.Controllers
         // PUT: api/Positions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<IActionResult> PutPosition(int id, Position position)
         {
             if (id != position.ID)
@@ -76,9 +84,11 @@ namespace VacationTool.Controllers
         // POST: api/Positions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<ActionResult<Position>> PostPosition(Position position)
         {
-            _context.Position.Add(position);
+            _context.Positions.Add(position);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetPosition", new { id = position.ID }, position);
@@ -86,15 +96,17 @@ namespace VacationTool.Controllers
 
         // DELETE: api/Positions/5
         [HttpDelete("{id}")]
+        [EnableCors("AllowAll")]
+        [Authorize]
         public async Task<IActionResult> DeletePosition(int id)
         {
-            var position = await _context.Position.FindAsync(id);
+            var position = await _context.Positions.FindAsync(id);
             if (position == null)
             {
                 return NotFound();
             }
 
-            _context.Position.Remove(position);
+            _context.Positions.Remove(position);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +114,7 @@ namespace VacationTool.Controllers
 
         private bool PositionExists(int id)
         {
-            return _context.Position.Any(e => e.ID == id);
+            return _context.Positions.Any(e => e.ID == id);
         }
     }
 }
